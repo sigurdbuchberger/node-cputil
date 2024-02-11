@@ -36,8 +36,9 @@ export const convertStarPrintMarkUp = async ({
   if (!text) return Promise.reject(new Error('text'))
 
   const fileName = `html-${uuidv4()}.stm`
-  const tmpFilePath = path.join(__dirname, `./tmp/${fileName}`)
-  const outputFilePath = path.join(__dirname, `./output/${fileName.replace('.stm', '.bin')}`)
+  const tmpFilePath = `/tmp/${fileName}`
+
+  const outputFilePath = `/tmp/output/${fileName.replace('.stm', '.bin')}`
 
   const outputFormat = contentType ?? StarContentType.STAR_VND_PRNT
 
@@ -45,9 +46,8 @@ export const convertStarPrintMarkUp = async ({
 
   const cmd = `${CPUTIL_PATH} ${printerType} scale-to-fit decode ${outputFormat} ${tmpFilePath} ${outputFilePath}`
 
-  await Promise.all([
-    makeDir(path.join(__dirname, './tmp')),
-    makeDir(path.join(__dirname, './output')),
+  await Promise.all([    
+    makeDir('/tmp/output'),
   ])
 
   await writeFile(tmpFilePath, text)
